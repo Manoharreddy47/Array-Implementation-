@@ -1,0 +1,80 @@
+
+Define the Sparse Matrix Structure
+The structure to represent each non-zero element is correct. No changes are needed here.
+
+cpp
+Copy code
+#include <iostream>
+
+struct SparseMatrixElement {
+    int row;
+    int column;
+    int value;
+};
+Create the Sparse Matrix Class
+Here's an improved version of the SparseMatrix class:
+
+cpp
+Copy code
+class SparseMatrix {
+private:
+    SparseMatrixElement* elements; // Pointer to an array of SparseMatrixElement
+    int numElements;  // Number of non-zero elements
+    int maxElements;  // Maximum capacity of the array
+
+public:
+    // Constructor
+    SparseMatrix(int maxSize) : maxElements(maxSize), numElements(0) {
+        elements = new SparseMatrixElement[maxSize];
+    }
+
+    // Destructor
+    ~SparseMatrix() {
+        delete[] elements;
+    }
+
+    // Insert a new non-zero element
+    void insert(int row, int column, int value) {
+        if (numElements < maxElements) {
+            elements[numElements].row = row;
+            elements[numElements].column = column;
+            elements[numElements].value = value;
+            numElements++;
+        } else {
+            std::cout << "Matrix is full. Cannot insert more elements." << std::endl;
+        }
+    }
+
+    // Display the non-zero elements
+    void display() const {
+        if (numElements == 0) {
+            std::cout << "The matrix is empty." << std::endl;
+            return;
+        }
+        for (int i = 0; i < numElements; i++) {
+            std::cout << "Row: " << elements[i].row 
+                      << ", Column: " << elements[i].column 
+                      << ", Value: " << elements[i].value << std::endl;
+        }
+    }
+};
+Changes and Improvements:
+
+Added constructor initialization list for clarity.
+Added a check in display() to handle the case when no elements are present.
+Example Usage
+Here’s how you can use the SparseMatrix class:
+
+cpp
+Copy code
+int main() {
+    SparseMatrix sm(10); // Create a SparseMatrix with a maximum of 10 non-zero elements
+
+    sm.insert(0, 1, 5);
+    sm.insert(2, 3, 8);
+    sm.insert(4, 2, 6);
+
+    sm.display();
+
+    return 0;
+}
